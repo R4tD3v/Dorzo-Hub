@@ -1,1 +1,136 @@
-# Working but this is the hub with buttons etc
+-- Create the ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+screenGui.ResetOnSpawn = false
+
+-- Create the Frame
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 687, 0, 337)
+frame.Position = UDim2.new(0.252, 0, 0.279, 0)
+frame.BackgroundColor3 = Color3.new(0, 0, 0)
+frame.BackgroundTransparency = 0.2
+frame.Parent = screenGui
+
+-- Create the Minimize Button
+local minimizeButton = Instance.new("TextButton")
+minimizeButton.Size = UDim2.new(0, 50, 0, 50)
+minimizeButton.Position = UDim2.new(1, -120, 0, 10)
+minimizeButton.Text = "-"
+minimizeButton.TextColor3 = Color3.new(1, 1, 0)
+minimizeButton.BackgroundColor3 = Color3.new(0, 0, 0)
+minimizeButton.BackgroundTransparency = 0.2
+minimizeButton.Parent = frame
+
+-- Create the Kill Button
+local killButton = Instance.new("TextButton")
+killButton.Size = UDim2.new(0, 50, 0, 50)
+killButton.Position = UDim2.new(1, -60, 0, 10)
+killButton.Text = "X"
+killButton.TextColor3 = Color3.new(1, 0, 0)
+killButton.BackgroundColor3 = Color3.new(0, 0, 0)
+killButton.BackgroundTransparency = 0.2
+killButton.Parent = frame
+
+-- Create the Reopen Button
+local reopenButton = Instance.new("TextButton")
+reopenButton.Size = UDim2.new(0, 200, 0, 50)
+reopenButton.Position = UDim2.new(0.405, 0, 0.917, 0)
+reopenButton.Text = "Reopen Menu"
+reopenButton.TextColor3 = Color3.new(1, 1, 0)
+reopenButton.TextScaled = true
+reopenButton.BackgroundColor3 = Color3.new(0, 0, 0)
+reopenButton.BackgroundTransparency = 0.2
+reopenButton.Visible = false
+reopenButton.Parent = screenGui
+
+-- Create the Sprint Button
+local sprintButton = Instance.new("TextButton")
+sprintButton.Size = UDim2.new(0, 182, 0, 43)
+sprintButton.Position = UDim2.new(0.031, 0, 0.816, 0)
+sprintButton.Text = "Sprint"
+sprintButton.TextColor3 = Color3.new(1, 1, 0)
+sprintButton.TextScaled = true
+sprintButton.BackgroundColor3 = Color3.new(0, 0, 0)
+sprintButton.BackgroundTransparency = 0.2
+sprintButton.Parent = frame
+
+-- Function to make the frame draggable only at the top
+local dragging = false
+local dragInput, mousePos, framePos
+
+minimizeButton.MouseButton1Click:Connect(function()
+    frame.Visible = false
+    reopenButton.Visible = true
+end)
+
+reopenButton.MouseButton1Click:Connect(function()
+    frame.Visible = true
+    reopenButton.Visible = false
+end)
+
+killButton.MouseButton1Click:Connect(function()
+    screenGui:Destroy()
+end)
+
+sprintButton.MouseButton1Click:Connect(function()
+    local player = game.Players.LocalPlayer
+    if player.Character then
+        local humanoid = player.Character:FindFirstChild("Humanoid")
+        if humanoid then
+            humanoid.WalkSpeed = 32
+        end
+    end
+    player.CharacterAdded:Connect(function(character)
+        local humanoid = character:WaitForChild("Humanoid")
+        humanoid.WalkSpeed = 32
+    end)
+end)
+
+frame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 and input.Position.Y < frame.AbsolutePosition.Y + 50 then
+        dragging = true
+        mousePos = input.Position
+        framePos = frame.Position
+
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+frame.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement then
+        dragInput = input
+    end
+end)
+
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        local delta = input.Position - mousePos
+        frame.Position = UDim2.new(
+            framePos.X.Scale,
+            framePos.X.Offset + delta.X,
+            framePos.Y.Scale,
+            framePos.Y.Offset + delta.Y
+        )
+    end
+end)
+
+-- Define the command to be executed repeatedly
+local function executeCommand()
+    -- Replace the following line with your desired command
+    print("Real people join our telegram t.me/Lokerz or you ded🔥")
+end
+
+-- Function to start the repeating task
+local function startRepeatingTask(interval)
+    while true do
+        executeCommand()
+        wait(interval)
+    end
+end
+
+-- Start the repeating task with a 5-second interval
+startRepeatingTask(5)
