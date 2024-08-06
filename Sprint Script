@@ -1,0 +1,22 @@
+--This script is keyless no keybinds are used it just changes walkspeed maybe a normal sprint script future
+
+-- Get the player
+local player = game.Players.LocalPlayer
+
+-- Wait until the player's character is loaded
+player.CharacterAdded:Connect(function(character)
+    -- Get the humanoid component of the character
+    local humanoid = character:WaitForChild("Humanoid")
+
+    -- Change the walkspeed to 32
+    humanoid.WalkSpeed = 32
+end)
+
+-- If the character is already loaded
+if player.Character then
+    -- Get the humanoid component of the character
+    local humanoid = player.Character:WaitForChild("Humanoid")
+
+    -- Change the walkspeed to 32
+    humanoid.WalkSpeed = 32
+end
