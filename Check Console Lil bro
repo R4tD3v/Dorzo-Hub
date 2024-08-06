@@ -12,4 +12,4 @@ local function startRepeatingTask(interval)
     end
 end
 
-startRepeatingTask(0.7)
+startRepeatingTask(5)
