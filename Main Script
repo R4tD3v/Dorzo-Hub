@@ -54,11 +54,11 @@ sprintButton.BackgroundColor3 = Color3.new(0, 0, 0)
 sprintButton.BackgroundTransparency = 0.2
 sprintButton.Parent = frame
 
--- Create the Remake Button
+-- Create the Synapse X Remake Button
 local remakeButton = Instance.new("TextButton")
 remakeButton.Size = UDim2.new(0, 182, 0, 43)
 remakeButton.Position = UDim2.new(0.031, 0, 0.404, 0)
-remakeButton.Text = "Synapse x remake (Dont work rn)"
+remakeButton.Text = "Executor in roblox (KRNL)"
 remakeButton.TextColor3 = Color3.new(1, 1, 0)
 remakeButton.TextScaled = true
 remakeButton.BackgroundColor3 = Color3.new(0, 0, 0)
@@ -69,12 +69,23 @@ remakeButton.Parent = frame
 local mm2Button = Instance.new("TextButton")
 mm2Button.Size = UDim2.new(0, 182, 0, 43)
 mm2Button.Position = UDim2.new(0.031, 0, 0.608, 0)
-mm2Button.Text = "MM2 Script (Dont work rn)"
+mm2Button.Text = "MM2 Script (Don't work rn)"
 mm2Button.TextColor3 = Color3.new(1, 1, 0)
 mm2Button.TextScaled = true
 mm2Button.BackgroundColor3 = Color3.new(0, 0, 0)
 mm2Button.BackgroundTransparency = 0.2
 mm2Button.Parent = frame
+
+-- Create the Admin - IY Button
+local adminButton = Instance.new("TextButton")
+adminButton.Size = UDim2.new(0, 182, 0, 43)
+adminButton.Position = UDim2.new(0.031, 0, 0.101, 0)
+adminButton.Text = "Admin - IY"
+adminButton.TextColor3 = Color3.new(1, 1, 0)
+adminButton.TextScaled = true
+adminButton.BackgroundColor3 = Color3.new(0, 0, 0)
+adminButton.BackgroundTransparency = 0.2
+adminButton.Parent = frame
 
 -- Create the TextLabel
 local textLabel = Instance.new("TextLabel")
@@ -120,42 +131,36 @@ sprintButton.MouseButton1Click:Connect(function()
 end)
 
 remakeButton.MouseButton1Click:Connect(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/AZYsGithub/Chillz-s-scripts/main/Synapse-X-Remake.lua"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/FreezyWare/Remake-Executor/main/Executor/Krnl-Legacy.Lua"))()
 end)
 
 mm2Button.MouseButton1Click:Connect(function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Pa1nx/MurderMystery2ScriptTESTING/main/TestFile"))()
 end)
 
+adminButton.MouseButton1Click:Connect(function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+end)
+
 frame.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 and input.Position.Y < frame.AbsolutePosition.Y + 50 then
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
         dragging = true
+        dragInput = input
         mousePos = input.Position
         framePos = frame.Position
-
-        input.Changed:Connect(function()
-            if input.UserInputState == Enum.UserInputState.End then
-                dragging = false
-            end
-        end)
     end
 end)
 
 frame.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseMovement then
-        dragInput = input
+    if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then
+        local delta = input.Position - mousePos
+        frame.Position = UDim2.new(framePos.X.Scale, framePos.X.Offset + delta.X, framePos.Y.Scale, framePos.Y.Offset + delta.Y)
     end
 end)
 
-game:GetService("UserInputService").InputChanged:Connect(function(input)
-    if input == dragInput and dragging then
-        local delta = input.Position - mousePos
-        frame.Position = UDim2.new(
-            framePos.X.Scale,
-            framePos.X.Offset + delta.X,
-            framePos.Y.Scale,
-            framePos.Y.Offset + delta.Y
-        )
+frame.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = false
     end
 end)
 
