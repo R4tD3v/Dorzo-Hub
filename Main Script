@@ -58,10 +58,10 @@ sprintButton.Parent = frame
 local textLabel = Instance.new("TextLabel")
 textLabel.Size = UDim2.new(0, 200, 0, 50)
 textLabel.Position = UDim2.new(0.354, 0, 0.021, 0)
-textLabel.Text = "Your Text Here"
+textLabel.Text = "Dorzo Hub"
 textLabel.TextColor3 = Color3.new(1, 1, 0)
 textLabel.TextScaled = true
-textLabel.TextBold = true
+textLabel.Font = Enum.Font.SourceSansBold
 textLabel.BackgroundTransparency = 1
 textLabel.Parent = frame
 
