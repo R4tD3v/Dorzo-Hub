@@ -1,6 +1,6 @@
-Rn im testing the loadstring if it works ill put it but if you 
-help me you will get a special Hub from me discord for contacting real_lokerz
-or telegram
-@justlokerz or t.me/Lokerz
-heres raw thingy
+Everything works rn if it doesnt contact me on telegram or discord idk 
+telegram : @justlokerz or t.me/Lokerz
+discord : real_lokerz
+
+Here is the script
 loadstring(game:HttpGet("https://raw.githubusercontent.com/LittleThingsMods/Dorzo-Hub/main/Main%20Script"))()
