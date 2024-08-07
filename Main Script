@@ -54,6 +54,28 @@ sprintButton.BackgroundColor3 = Color3.new(0, 0, 0)
 sprintButton.BackgroundTransparency = 0.2
 sprintButton.Parent = frame
 
+-- Create the Remake Button
+local remakeButton = Instance.new("TextButton")
+remakeButton.Size = UDim2.new(0, 182, 0, 43)
+remakeButton.Position = UDim2.new(0.031, 0, 0.404, 0)
+remakeButton.Text = "Synapse x remake (Dont work rn)"
+remakeButton.TextColor3 = Color3.new(1, 1, 0)
+remakeButton.TextScaled = true
+remakeButton.BackgroundColor3 = Color3.new(0, 0, 0)
+remakeButton.BackgroundTransparency = 0.2
+remakeButton.Parent = frame
+
+-- Create the MM2 Script Button
+local mm2Button = Instance.new("TextButton")
+mm2Button.Size = UDim2.new(0, 182, 0, 43)
+mm2Button.Position = UDim2.new(0.031, 0, 0.608, 0)
+mm2Button.Text = "MM2 Script (Dont work rn)"
+mm2Button.TextColor3 = Color3.new(1, 1, 0)
+mm2Button.TextScaled = true
+mm2Button.BackgroundColor3 = Color3.new(0, 0, 0)
+mm2Button.BackgroundTransparency = 0.2
+mm2Button.Parent = frame
+
 -- Create the TextLabel
 local textLabel = Instance.new("TextLabel")
 textLabel.Size = UDim2.new(0, 200, 0, 50)
@@ -95,6 +117,14 @@ sprintButton.MouseButton1Click:Connect(function()
         local humanoid = character:WaitForChild("Humanoid")
         humanoid.WalkSpeed = 32
     end)
+end)
+
+remakeButton.MouseButton1Click:Connect(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/AZYsGithub/Chillz-s-scripts/main/Synapse-X-Remake.lua"))()
+end)
+
+mm2Button.MouseButton1Click:Connect(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Pa1nx/MurderMystery2ScriptTESTING/main/TestFile"))()
 end)
 
 frame.InputBegan:Connect(function(input)
