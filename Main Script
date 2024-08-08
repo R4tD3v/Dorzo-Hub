@@ -35,7 +35,7 @@ killButton.Parent = frame
 local reopenButton = Instance.new("TextButton")
 reopenButton.Size = UDim2.new(0, 200, 0, 50)
 reopenButton.Position = UDim2.new(0.405, 0, 0.917, 0)
-reopenButton.Text = "Reopen Menu"
+reopenButton.Text = "Nigga why u minimize?"
 reopenButton.TextColor3 = Color3.new(1, 1, 0)
 reopenButton.TextScaled = true
 reopenButton.BackgroundColor3 = Color3.new(0, 0, 0)
@@ -54,7 +54,7 @@ sprintButton.BackgroundColor3 = Color3.new(0, 0, 0)
 sprintButton.BackgroundTransparency = 0.2
 sprintButton.Parent = frame
 
--- Create the Synapse X Remake Button
+-- Create the Krnl Remake Button
 local remakeButton = Instance.new("TextButton")
 remakeButton.Size = UDim2.new(0, 182, 0, 43)
 remakeButton.Position = UDim2.new(0.031, 0, 0.404, 0)
@@ -80,7 +80,7 @@ mm2Button.Parent = frame
 local adminButton = Instance.new("TextButton")
 adminButton.Size = UDim2.new(0, 182, 0, 43)
 adminButton.Position = UDim2.new(0.031, 0, 0.101, 0)
-adminButton.Text = "Admin - IY"
+adminButton.Text = "Admin (Trying to fix script not executing)"
 adminButton.TextColor3 = Color3.new(1, 1, 0)
 adminButton.TextScaled = true
 adminButton.BackgroundColor3 = Color3.new(0, 0, 0)
@@ -91,7 +91,7 @@ adminButton.Parent = frame
 local textLabel = Instance.new("TextLabel")
 textLabel.Size = UDim2.new(0, 200, 0, 50)
 textLabel.Position = UDim2.new(0.354, 0, 0.021, 0)
-textLabel.Text = "Dorzo Hub"
+textLabel.Text = "Dorzohub💯 (beta)"
 textLabel.TextColor3 = Color3.new(1, 1, 0)
 textLabel.TextScaled = true
 textLabel.Font = Enum.Font.SourceSansBold
@@ -178,5 +178,5 @@ local function startRepeatingTask(interval)
     end
 end
 
--- Start the repeating task with a 5-second interval
-startRepeatingTask(5)
+-- Start the repeating task with a 12-second interval
+startRepeatingTask(12)
