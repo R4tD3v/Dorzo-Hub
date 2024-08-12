@@ -69,7 +69,7 @@ remakeButton.Parent = frame
 local mm2Button = Instance.new("TextButton")
 mm2Button.Size = UDim2.new(0, 182, 0, 43)
 mm2Button.Position = UDim2.new(0.031, 0, 0.608, 0)
-mm2Button.Text = "MM2 Script (Don't work rn)"
+mm2Button.Text = "Fly Gui V3"
 mm2Button.TextColor3 = Color3.new(1, 1, 0)
 mm2Button.TextScaled = true
 mm2Button.BackgroundColor3 = Color3.new(0, 0, 0)
@@ -91,7 +91,7 @@ adminButton.Parent = frame
 local textLabel = Instance.new("TextLabel")
 textLabel.Size = UDim2.new(0, 200, 0, 50)
 textLabel.Position = UDim2.new(0.354, 0, 0.021, 0)
-textLabel.Text = "Dorzohub💯 (beta)"
+textLabel.Text = "Dorzohub |🪐"
 textLabel.TextColor3 = Color3.new(1, 1, 0)
 textLabel.TextScaled = true
 textLabel.Font = Enum.Font.SourceSansBold
@@ -135,7 +135,7 @@ remakeButton.MouseButton1Click:Connect(function()
 end)
 
 mm2Button.MouseButton1Click:Connect(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Pa1nx/MurderMystery2ScriptTESTING/main/TestFile"))()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()
 end)
 
 adminButton.MouseButton1Click:Connect(function()
