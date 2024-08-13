@@ -87,6 +87,17 @@ adminButton.BackgroundColor3 = Color3.new(0, 0, 0)
 adminButton.BackgroundTransparency = 0.2
 adminButton.Parent = frame
 
+-- Create the Arsenal Rage Cheat Button
+local arsenalButton = Instance.new("TextButton")
+arsenalButton.Size = UDim2.new(0, 182, 0, 43)
+arsenalButton.Position = UDim2.new(0.33, 0, 0.813, 0)
+arsenalButton.Text = "Arsenal - Rage Cheat"
+arsenalButton.TextColor3 = Color3.new(1, 1, 0)
+arsenalButton.TextScaled = true
+arsenalButton.BackgroundColor3 = Color3.new(0, 0, 0)
+arsenalButton.BackgroundTransparency = 0.2
+arsenalButton.Parent = frame
+
 -- Create the TextLabel
 local textLabel = Instance.new("TextLabel")
 textLabel.Size = UDim2.new(0, 200, 0, 50)
@@ -140,6 +151,35 @@ end)
 
 adminButton.MouseButton1Click:Connect(function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+end)
+
+arsenalButton.MouseButton1Click:Connect(function()
+    -- Arsenal Rage Cheat Script
+    local RS = game:GetService("ReplicatedStorage")
+    print("START")
+    function changeThis(g,n,v)
+        if g:FindFirstChild(n) ~= nil and g:FindFirstChild(n):IsA("ValueBase") then
+            g[n].Value = v
+        else
+            warn(g.Name..' does not have a value for "'..n..'"')
+        end
+    end
+    for i,g in pairs(RS.Weapons:GetChildren()) do
+        if g ~= nil then
+            changeThis(g,"FireRate",0.011)
+            changeThis(g,"Auto",true)
+            changeThis(g,"RecoilControl",0)
+            changeThis(g,"Ammo",999)
+            changeThis(g,"Speed%",-1000)
+        end
+    end
+
+    -- Set Player's Health to 9999
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoid = character:WaitForChild("Humanoid")
+    humanoid.MaxHealth = 9999
+    humanoid.Health = 9999
 end)
 
 frame.InputBegan:Connect(function(input)
