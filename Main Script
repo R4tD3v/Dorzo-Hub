@@ -91,7 +91,7 @@ adminButton.Parent = frame
 local arsenalButton = Instance.new("TextButton")
 arsenalButton.Size = UDim2.new(0, 182, 0, 43)
 arsenalButton.Position = UDim2.new(0.33, 0, 0.813, 0)
-arsenalButton.Text = "Arsenal - Rage Cheat"
+arsenalButton.Text = "Rolve Fps games - Rage Cheat"
 arsenalButton.TextColor3 = Color3.new(1, 1, 0)
 arsenalButton.TextScaled = true
 arsenalButton.BackgroundColor3 = Color3.new(0, 0, 0)
@@ -166,7 +166,7 @@ arsenalButton.MouseButton1Click:Connect(function()
     end
     for i,g in pairs(RS.Weapons:GetChildren()) do
         if g ~= nil then
-            changeThis(g,"FireRate",0.011)
+            changeThis(g,"FireRate",0.00011)
             changeThis(g,"Auto",true)
             changeThis(g,"RecoilControl",0)
             changeThis(g,"Ammo",999)
@@ -174,25 +174,65 @@ arsenalButton.MouseButton1Click:Connect(function()
         end
     end
 
-    -- Set Player's Health to 9999
+    -- Set Player's Health to 999
     local player = game.Players.LocalPlayer
     local character = player.Character or player.CharacterAdded:Wait()
     local humanoid = character:WaitForChild("Humanoid")
-    humanoid.MaxHealth = 9999
-    humanoid.Health = 9999
+    humanoid.MaxHealth = 999
+    humanoid.Health = 999
+    
+    -- Spin and Look Down Script
+    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+    local head = character:WaitForChild("Head")
+    local neck = head:WaitForChild("Neck")
+
+    local spinSpeed = 1080 -- Degrees per second
+
+    -- Spin the character for the local player
+    game:GetService("RunService").RenderStepped:Connect(function(deltaTime)
+        humanoidRootPart.CFrame = humanoidRootPart.CFrame * CFrame.Angles(0, math.rad(spinSpeed * deltaTime), 0)
+    end)
+
+    -- Make the character look down for other players and hide the head
+    game:GetService("RunService").Stepped:Connect(function()
+        if neck then
+            neck.C0 = CFrame.new(0, -1, 0) * CFrame.Angles(math.rad(-90), 0, 0)
+        end
+
+        if head then
+            head.Transparency = 1  -- Makes the head invisible
+            head.CanCollide = false  -- Ensures the head doesn’t interfere with physics
+            for _, child in pairs(head:GetChildren()) do
+                if child:IsA("Decal") or child:IsA("Mesh") then
+                    child:Destroy()  -- Remove any accessories or faces on the head
+                end
+            end
+        end
+    end)
 end)
 
+-- Make the frame draggable
 frame.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 then
         dragging = true
-        dragInput = input
         mousePos = input.Position
         framePos = frame.Position
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
     end
 end)
 
 frame.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then
+    if input.UserInputType == Enum.UserInputType.MouseMovement then
+        dragInput = input
+    end
+end)
+
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+    if dragging and input == dragInput then
         local delta = input.Position - mousePos
         frame.Position = UDim2.new(framePos.X.Scale, framePos.X.Offset + delta.X, framePos.Y.Scale, framePos.Y.Offset + delta.Y)
     end
@@ -206,8 +246,7 @@ end)
 
 -- Define the command to be executed repeatedly
 local function executeCommand()
-    -- Replace the following line with your desired command
-    print("Real people join our telegram t.me/Lokerz or you ded🔥")
+    print("You use our scripts why not join our telegram t.me/DorzoHubRoblox")
 end
 
 -- Function to start the repeating task
