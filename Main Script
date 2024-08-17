@@ -1,12 +1,13 @@
 -- Create the ScreenGui
 local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "DorzoHubScreenGui"  -- Give the ScreenGui a name
 screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 screenGui.ResetOnSpawn = false
 
 -- Create the Frame
 local frame = Instance.new("Frame")
 frame.Size = UDim2.new(0, 687, 0, 337)
-frame.Position = UDim2.new(0.252, 0, 0.279, 0)
+frame.Position = UDim2.new(0.25, 0, 0.28, 0)
 frame.BackgroundColor3 = Color3.new(0, 0, 0)
 frame.BackgroundTransparency = 0.2
 frame.Parent = screenGui
@@ -101,7 +102,7 @@ arsenalButton.Parent = frame
 -- Create the Owl Hub Button
 local owlHubButton = Instance.new("TextButton")
 owlHubButton.Size = UDim2.new(0, 182, 0, 43)
-owlHubButton.Position = UDim2.new(0.33, 0, 0.608, 0)  -- Position as requested
+owlHubButton.Position = UDim2.new(0.33, 0, 0.608, 0)
 owlHubButton.Text = "Owl Hub"
 owlHubButton.TextColor3 = Color3.new(1, 1, 0)
 owlHubButton.TextScaled = true
@@ -175,36 +176,92 @@ arsenalButton.MouseButton1Click:Connect(function()
             warn(g.Name..' does not have a value for "'..n..'"')
         end
     end
-    for i,g in pairs(RS.Weapons:GetChildren()) do
-        if g ~= nil then
-            changeThis(g,"FireRate",0.00011)
-            changeThis(g,"Auto",true)
-            changeThis(g,"RecoilControl",0)
-            changeThis(g,"Ammo",999)
+    local function thingy(i)
+        for _, v in pairs(i) do
+            if v:IsA("ModuleScript") then
+                local a,b = pcall(require,v)
+                if a then
+                    if type(b) == "table" then
+                        for _,c in pairs(b) do
+                            if type(c) == "table" and c.Store then
+                                c.Store.isEnabled = function() return true end
+                                c.Store.isAlive = function() return true end
+                                c.Store.getCharacter = function() return game.Players.LocalPlayer.Character end
+                                c.Store.getPlayer = function() return game.Players.LocalPlayer end
+                                c.Store.getHealth = function() return 100 end
+                                c.Store.getMaxHealth = function() return 100 end
+                                c.Store.getAmmo = function() return math.huge end
+                                c.Store.getMaxAmmo = function() return math.huge end
+                                c.Store.getEquipped = function() return true end
+                                c.Store.getTeam = function() return "Prisoner" end
+                                c.Store.getStance = function() return "Standing" end
+                                c.Store.getMoving = function() return false end
+                                c.Store.getKills = function() return math.huge end
+                                c.Store.getDeaths = function() return 0 end
+                                c.Store.getAssists = function() return math.huge end
+                                c.Store.getHeadshots = function() return math.huge end
+                                c.Store.getDamage = function() return math.huge end
+                                c.Store.getAccuracy = function() return 100 end
+                            end
+                        end
+                    end
+                end
+            end
+            if #v:GetChildren() > 0 then
+                thingy(v:GetChildren())
+            end
         end
     end
-    print("done changing weapon stats")
-    local p = game.Players.LocalPlayer
-    local c = p.Character
-    local hrp = c:WaitForChild("HumanoidRootPart")
-    for i = 1,math.huge do
-        hrp.CFrame = CFrame.Angles(math.rad(i*999),math.rad(i*999),math.rad(i*999))
-    end
-    p.CharacterAdded:Connect(function(c)
-        c:WaitForChild("HumanoidRootPart").CFrame = hrp.CFrame
+
+    thingy(RS:GetChildren())
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+
+    local humanoid = character:WaitForChild("Humanoid")
+    humanoid.MaxHealth = 999
+    humanoid.Health = 999
+
+    -- Spin and Look Down Script
+    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+    local head = character:WaitForChild("Head")
+    local neck = head:WaitForChild("Neck")
+
+    local spinSpeed = 1080 -- Degrees per second
+
+    -- Spin the character for the local player
+    game:GetService("RunService").RenderStepped:Connect(function(deltaTime)
+        humanoidRootPart.CFrame = humanoidRootPart.CFrame * CFrame.Angles(0, math.rad(spinSpeed * deltaTime), 0)
+    end)
+
+    -- Make the character look down for other players and hide the head
+    game:GetService("RunService").Stepped:Connect(function()
+        if neck then
+            neck.C0 = CFrame.new(0, -1, 0) * CFrame.Angles(math.rad(-90), 0, 0)
+        end
+
+        if head then
+            head.Transparency = 1  -- Makes the head invisible
+            head.CanCollide = false  -- Ensures the head doesn’t interfere with physics
+            for _, child in pairs(head:GetChildren()) do
+                if child:IsA("Decal") or child:IsA("Mesh") then
+                    child:Destroy()  -- Remove any accessories or faces on the head
+                end
+            end
+        end
     end)
 end)
 
+-- Owl Hub Button
 owlHubButton.MouseButton1Click:Connect(function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/CriShoux/OwlHub/master/OwlHub.txt"))()
 end)
 
+-- Make the frame draggable
 frame.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 and input.Position.Y < (frame.AbsolutePosition.Y + 50) then
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
         dragging = true
         mousePos = input.Position
         framePos = frame.Position
-
         input.Changed:Connect(function()
             if input.UserInputState == Enum.UserInputState.End then
                 dragging = false
@@ -214,17 +271,36 @@ frame.InputBegan:Connect(function(input)
 end)
 
 frame.InputChanged:Connect(function(input)
-    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-        local delta = input.Position - mousePos
-        frame.Position = UDim2.new(
-            framePos.X.Scale,
-            framePos.X.Offset + delta.X,
-            framePos.Y.Scale,
-            framePos.Y.Offset + delta.Y
-        )
+    if input.UserInputType == Enum.UserInputType.MouseMovement then
+        dragInput = input
     end
 end)
 
-while wait(12) do
-    print("You use our script so why not join our tg t.me/DorzoHubRoblox")
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+    if dragging and input == dragInput then
+        local delta = input.Position - mousePos
+        frame.Position = UDim2.new(framePos.X.Scale, framePos.X.Offset + delta.X, framePos.Y.Scale, framePos.Y.Offset + delta.Y)
+    end
+end)
+
+frame.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = false
+    end
+end)
+
+-- Define the command to be executed repeatedly
+local function executeCommand()
+    print("You use our scripts why not join our telegram t.me/DorzoHubRoblox")
 end
+
+-- Function to start the repeating task
+local function startRepeatingTask(interval)
+    while true do
+        executeCommand()
+        wait(interval)
+    end
+end
+
+-- Start the repeating task with a 12-second interval
+startRepeatingTask(12)
