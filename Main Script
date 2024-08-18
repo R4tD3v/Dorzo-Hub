@@ -1,13 +1,12 @@
 -- Create the ScreenGui
 local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "DorzoHubScreenGui"  -- Give the ScreenGui a name
 screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 screenGui.ResetOnSpawn = false
 
 -- Create the Frame
 local frame = Instance.new("Frame")
 frame.Size = UDim2.new(0, 687, 0, 337)
-frame.Position = UDim2.new(0.25, 0, 0.28, 0)
+frame.Position = UDim2.new(0.252, 0, 0.279, 0)
 frame.BackgroundColor3 = Color3.new(0, 0, 0)
 frame.BackgroundTransparency = 0.2
 frame.Parent = screenGui
@@ -176,51 +175,23 @@ arsenalButton.MouseButton1Click:Connect(function()
             warn(g.Name..' does not have a value for "'..n..'"')
         end
     end
-    local function thingy(i)
-        for _, v in pairs(i) do
-            if v:IsA("ModuleScript") then
-                local a,b = pcall(require,v)
-                if a then
-                    if type(b) == "table" then
-                        for _,c in pairs(b) do
-                            if type(c) == "table" and c.Store then
-                                c.Store.isEnabled = function() return true end
-                                c.Store.isAlive = function() return true end
-                                c.Store.getCharacter = function() return game.Players.LocalPlayer.Character end
-                                c.Store.getPlayer = function() return game.Players.LocalPlayer end
-                                c.Store.getHealth = function() return 100 end
-                                c.Store.getMaxHealth = function() return 100 end
-                                c.Store.getAmmo = function() return math.huge end
-                                c.Store.getMaxAmmo = function() return math.huge end
-                                c.Store.getEquipped = function() return true end
-                                c.Store.getTeam = function() return "Prisoner" end
-                                c.Store.getStance = function() return "Standing" end
-                                c.Store.getMoving = function() return false end
-                                c.Store.getKills = function() return math.huge end
-                                c.Store.getDeaths = function() return 0 end
-                                c.Store.getAssists = function() return math.huge end
-                                c.Store.getHeadshots = function() return math.huge end
-                                c.Store.getDamage = function() return math.huge end
-                                c.Store.getAccuracy = function() return 100 end
-                            end
-                        end
-                    end
-                end
-            end
-            if #v:GetChildren() > 0 then
-                thingy(v:GetChildren())
-            end
+    for i,g in pairs(RS.Weapons:GetChildren()) do
+        if g ~= nil then
+            changeThis(g,"FireRate",0.00011)
+            changeThis(g,"Auto",true)
+            changeThis(g,"RecoilControl",0)
+            changeThis(g,"Ammo",999)
+            changeThis(g,"Speed%",-1000)
         end
     end
 
-    thingy(RS:GetChildren())
+    -- Set Player's Health to 999
     local player = game.Players.LocalPlayer
     local character = player.Character or player.CharacterAdded:Wait()
-
     local humanoid = character:WaitForChild("Humanoid")
     humanoid.MaxHealth = 999
     humanoid.Health = 999
-
+    
     -- Spin and Look Down Script
     local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
     local head = character:WaitForChild("Head")
@@ -251,17 +222,19 @@ arsenalButton.MouseButton1Click:Connect(function()
     end)
 end)
 
--- Owl Hub Button
 owlHubButton.MouseButton1Click:Connect(function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/CriShoux/OwlHub/master/OwlHub.txt"))()
 end)
 
--- Make the frame draggable
-frame.InputBegan:Connect(function(input)
+-- Dragging functionality for the frame (Top part of the frame only)
+local dragBar = textLabel -- Assign this to the top part where dragging should be allowed
+
+dragBar.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 then
         dragging = true
         mousePos = input.Position
         framePos = frame.Position
+
         input.Changed:Connect(function()
             if input.UserInputState == Enum.UserInputState.End then
                 dragging = false
@@ -270,37 +243,15 @@ frame.InputBegan:Connect(function(input)
     end
 end)
 
-frame.InputChanged:Connect(function(input)
+dragBar.InputChanged:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseMovement then
         dragInput = input
     end
 end)
 
 game:GetService("UserInputService").InputChanged:Connect(function(input)
-    if dragging and input == dragInput then
+    if input == dragInput and dragging then
         local delta = input.Position - mousePos
         frame.Position = UDim2.new(framePos.X.Scale, framePos.X.Offset + delta.X, framePos.Y.Scale, framePos.Y.Offset + delta.Y)
     end
 end)
-
-frame.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        dragging = false
-    end
-end)
-
--- Define the command to be executed repeatedly
-local function executeCommand()
-    print("You use our scripts why not join our telegram t.me/DorzoHubRoblox")
-end
-
--- Function to start the repeating task
-local function startRepeatingTask(interval)
-    while true do
-        executeCommand()
-        wait(interval)
-    end
-end
-
--- Start the repeating task with a 12-second interval
-startRepeatingTask(12)
