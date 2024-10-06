@@ -11,6 +11,43 @@ frame.BackgroundColor3 = Color3.new(0, 0, 0)
 frame.BackgroundTransparency = 0.2
 frame.Parent = screenGui
 
+-- Enable frame dragging at the top
+local dragging
+local dragInput
+local dragStart
+local startPos
+
+local function update(input)
+    local delta = input.Position - dragStart
+    frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+end
+
+frame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = frame.Position
+
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+frame.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement then
+        dragInput = input
+    end
+end)
+
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+    if dragging and input == dragInput then
+        update(input)
+    end
+end)
+
 -- Create the Minimize Button
 local minimizeButton = Instance.new("TextButton")
 minimizeButton.Size = UDim2.new(0, 50, 0, 50)
@@ -34,8 +71,8 @@ killButton.Parent = frame
 -- Create the Reopen Button
 local reopenButton = Instance.new("TextButton")
 reopenButton.Size = UDim2.new(0, 200, 0, 50)
-reopenButton.Position = UDim2.new(0.405, 0, 0.917, 0)
-reopenButton.Text = "Ty for using DorzoHub"
+reopenButton.Position = UDim2.new(0.4, 0, 0.9, 0)
+reopenButton.Text = "Reopen"
 reopenButton.TextColor3 = Color3.new(1, 1, 0)
 reopenButton.TextScaled = true
 reopenButton.BackgroundColor3 = Color3.new(0, 0, 0)
@@ -43,38 +80,27 @@ reopenButton.BackgroundTransparency = 0.2
 reopenButton.Visible = false
 reopenButton.Parent = screenGui
 
--- Create the Sprint Button
-local sprintButton = Instance.new("TextButton")
-sprintButton.Size = UDim2.new(0, 182, 0, 43)
-sprintButton.Position = UDim2.new(0.031, 0, 0.816, 0)
-sprintButton.Text = "Sprint"
-sprintButton.TextColor3 = Color3.new(1, 1, 0)
-sprintButton.TextScaled = true
-sprintButton.BackgroundColor3 = Color3.new(0, 0, 0)
-sprintButton.BackgroundTransparency = 0.2
-sprintButton.Parent = frame
+-- Minimize functionality
+local isMinimized = false
+minimizeButton.MouseButton1Click:Connect(function()
+    if not isMinimized then
+        frame.Visible = false
+        reopenButton.Visible = true
+        isMinimized = true
+    end
+end)
 
--- Create the Krnl Remake Button
-local remakeButton = Instance.new("TextButton")
-remakeButton.Size = UDim2.new(0, 182, 0, 43)
-remakeButton.Position = UDim2.new(0.031, 0, 0.404, 0)
-remakeButton.Text = "Executor in roblox (KRNL)"
-remakeButton.TextColor3 = Color3.new(1, 1, 0)
-remakeButton.TextScaled = true
-remakeButton.BackgroundColor3 = Color3.new(0, 0, 0)
-remakeButton.BackgroundTransparency = 0.2
-remakeButton.Parent = frame
+-- Reopen functionality
+reopenButton.MouseButton1Click:Connect(function()
+    frame.Visible = true
+    reopenButton.Visible = false
+    isMinimized = false
+end)
 
--- Create the MM2 Script Button
-local mm2Button = Instance.new("TextButton")
-mm2Button.Size = UDim2.new(0, 182, 0, 43)
-mm2Button.Position = UDim2.new(0.031, 0, 0.608, 0)
-mm2Button.Text = "Fly Gui V3"
-mm2Button.TextColor3 = Color3.new(1, 1, 0)
-mm2Button.TextScaled = true
-mm2Button.BackgroundColor3 = Color3.new(0, 0, 0)
-mm2Button.BackgroundTransparency = 0.2
-mm2Button.Parent = frame
+-- Kill functionality
+killButton.MouseButton1Click:Connect(function()
+    screenGui:Destroy() -- Destroys the entire UI, can't be brought back
+end)
 
 -- Create the Admin - IY Button
 local adminButton = Instance.new("TextButton")
@@ -87,11 +113,33 @@ adminButton.BackgroundColor3 = Color3.new(0, 0, 0)
 adminButton.BackgroundTransparency = 0.2
 adminButton.Parent = frame
 
--- Create the Arsenal Rage Cheat Button
+-- Create the Sprint Button
+local sprintButton = Instance.new("TextButton")
+sprintButton.Size = UDim2.new(0, 182, 0, 43)
+sprintButton.Position = UDim2.new(0.031, 0, 0.816, 0)
+sprintButton.Text = "Sprint"
+sprintButton.TextColor3 = Color3.new(1, 1, 0)
+sprintButton.TextScaled = true
+sprintButton.BackgroundColor3 = Color3.new(0, 0, 0)
+sprintButton.BackgroundTransparency = 0.2
+sprintButton.Parent = frame
+
+-- Create the TextLabel
+local textLabel = Instance.new("TextLabel")
+textLabel.Size = UDim2.new(0, 200, 0, 50)
+textLabel.Position = UDim2.new(0.354, 0, 0.021, 0)
+textLabel.Text = "Dorzohub |🪐"
+textLabel.TextColor3 = Color3.new(1, 1, 0)
+textLabel.TextScaled = true
+textLabel.Font = Enum.Font.SourceSansBold
+textLabel.BackgroundTransparency = 1
+textLabel.Parent = frame
+
+-- Create the Arsenal Button
 local arsenalButton = Instance.new("TextButton")
 arsenalButton.Size = UDim2.new(0, 182, 0, 43)
-arsenalButton.Position = UDim2.new(0.33, 0, 0.813, 0)
-arsenalButton.Text = "Rolve Fps games - Rage Cheat"
+arsenalButton.Position = UDim2.new(0.031, 0, 0.404, 0)
+arsenalButton.Text = "Arsenal - Rage Cheat"
 arsenalButton.TextColor3 = Color3.new(1, 1, 0)
 arsenalButton.TextScaled = true
 arsenalButton.BackgroundColor3 = Color3.new(0, 0, 0)
@@ -109,169 +157,68 @@ owlHubButton.BackgroundColor3 = Color3.new(0, 0, 0)
 owlHubButton.BackgroundTransparency = 0.2
 owlHubButton.Parent = frame
 
--- Create the TextLabel
-local textLabel = Instance.new("TextLabel")
-textLabel.Size = UDim2.new(0, 200, 0, 50)
-textLabel.Position = UDim2.new(0.354, 0, 0.021, 0)
-textLabel.Text = "Dorzohub |🪐"
-textLabel.TextColor3 = Color3.new(1, 1, 0)
-textLabel.TextScaled = true
-textLabel.Font = Enum.Font.SourceSansBold
-textLabel.BackgroundTransparency = 1
-textLabel.Parent = frame
+-- Create the Fly Gui V3 Button
+local mm2Button = Instance.new("TextButton")
+mm2Button.Size = UDim2.new(0, 182, 0, 43)
+mm2Button.Position = UDim2.new(0.031, 0, 0.608, 0)
+mm2Button.Text = "Fly Gui V3"
+mm2Button.TextColor3 = Color3.new(1, 1, 0)
+mm2Button.TextScaled = true
+mm2Button.BackgroundColor3 = Color3.new(0, 0, 0)
+mm2Button.BackgroundTransparency = 0.2
+mm2Button.Parent = frame
 
--- Function to make the frame draggable only at the top
-local dragging = false
-local dragInput, mousePos, framePos
-
-minimizeButton.MouseButton1Click:Connect(function()
-    frame.Visible = false
-    reopenButton.Visible = true
+-- Admin - IY button functionality
+adminButton.MouseButton1Click:Connect(function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
 end)
 
-reopenButton.MouseButton1Click:Connect(function()
-    frame.Visible = true
-    reopenButton.Visible = false
-end)
-
-killButton.MouseButton1Click:Connect(function()
-    screenGui:Destroy()
-end)
-
+-- Sprint button functionality
 sprintButton.MouseButton1Click:Connect(function()
     local player = game.Players.LocalPlayer
     if player.Character then
         local humanoid = player.Character:FindFirstChild("Humanoid")
         if humanoid then
-            humanoid.WalkSpeed = 32
+            humanoid.WalkSpeed = 32 -- Set the walk speed to 32
         end
     end
+
+    -- Ensure that when the character respawns, the walk speed is still set to 32
     player.CharacterAdded:Connect(function(character)
         local humanoid = character:WaitForChild("Humanoid")
         humanoid.WalkSpeed = 32
     end)
 end)
 
-remakeButton.MouseButton1Click:Connect(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/FreezyWare/Remake-Executor/main/Executor/Krnl-Legacy.Lua"))()
-end)
-
-mm2Button.MouseButton1Click:Connect(function()
-   loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()
-end)
-
-adminButton.MouseButton1Click:Connect(function()
-    loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
-end)
-
+-- Arsenal button functionality
 arsenalButton.MouseButton1Click:Connect(function()
     -- Arsenal Rage Cheat Script
     local RS = game:GetService("ReplicatedStorage")
     print("START")
-    function changeThis(g,n,v)
+    function changeThis(g, n, v)
         if g:FindFirstChild(n) ~= nil and g:FindFirstChild(n):IsA("ValueBase") then
             g[n].Value = v
         else
             warn(g.Name..' does not have a value for "'..n..'"')
         end
     end
-    for i,g in pairs(RS.Weapons:GetChildren()) do
+    for i, g in pairs(RS.Weapons:GetChildren()) do
         if g ~= nil then
-            changeThis(g,"FireRate",0.00011)
-            changeThis(g,"Auto",true)
-            changeThis(g,"RecoilControl",0)
-            changeThis(g,"Ammo",999)
-            changeThis(g,"Speed%",-1000)
+            changeThis(g, "FireRate", 0.00011)
+            changeThis(g, "Auto", true)
+            changeThis(g, "RecoilControl", 0)
+            changeThis(g, "Ammo", 999)
+            changeThis(g, "Speed%", -1000)
         end
     end
-
-    -- Set Player's Health to 999
-    local player = game.Players.LocalPlayer
-    local character = player.Character or player.CharacterAdded:Wait()
-    local humanoid = character:WaitForChild("Humanoid")
-    humanoid.MaxHealth = 999
-    humanoid.Health = 999
-    
-    -- Spin and Look Down Script
-    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-    local head = character:WaitForChild("Head")
-    local neck = head:WaitForChild("Neck")
-
-    local spinSpeed = 1080 -- Degrees per second
-
-    -- Spin the character for the local player
-    game:GetService("RunService").RenderStepped:Connect(function(deltaTime)
-        humanoidRootPart.CFrame = humanoidRootPart.CFrame * CFrame.Angles(0, math.rad(spinSpeed * deltaTime), 0)
-    end)
-
-    -- Make the character look down for other players and hide the head
-    game:GetService("RunService").Stepped:Connect(function()
-        if neck then
-            neck.C0 = CFrame.new(0, -1, 0) * CFrame.Angles(math.rad(-90), 0, 0)
-        end
-
-        if head then
-            head.Transparency = 1  -- Makes the head invisible
-            head.CanCollide = false  -- Ensures the head doesn’t interfere with physics
-            for _, child in pairs(head:GetChildren()) do
-                if child:IsA("Decal") or child:IsA("Mesh") then
-                    child:Destroy()  -- Remove any accessories or faces on the head
-                end
-            end
-        end
-    end)
 end)
 
--- Owl Hub Button
+-- Owl Hub button functionality
 owlHubButton.MouseButton1Click:Connect(function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/CriShoux/OwlHub/master/OwlHub.txt"))()
 end)
 
--- Make the frame draggable
-frame.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        dragging = true
-        mousePos = input.Position
-        framePos = frame.Position
-        input.Changed:Connect(function()
-            if input.UserInputState == Enum.UserInputState.End then
-                dragging = false
-            end
-        end)
-    end
+-- Fly Gui V3 button functionality
+mm2Button.MouseButton1Click:Connect(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()
 end)
-
-frame.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseMovement then
-        dragInput = input
-    end
-end)
-
-game:GetService("UserInputService").InputChanged:Connect(function(input)
-    if dragging and input == dragInput then
-        local delta = input.Position - mousePos
-        frame.Position = UDim2.new(framePos.X.Scale, framePos.X.Offset + delta.X, framePos.Y.Scale, framePos.Y.Offset + delta.Y)
-    end
-end)
-
-frame.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        dragging = false
-    end
-end)
-
--- Define the command to be executed repeatedly
-local function executeCommand()
-    print("You use our scripts why not join our telegram t.me/DorzoHubRoblox")
-end
-
--- Function to start the repeating task
-local function startRepeatingTask(interval)
-    while true do
-        executeCommand()
-        wait(interval)
-    end
-end
-
--- Start the repeating task with a 12-second interval
-startRepeatingTask(12)
